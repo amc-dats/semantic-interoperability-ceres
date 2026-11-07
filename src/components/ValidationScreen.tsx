@@ -67,8 +67,8 @@ export function ValidationScreen({ value, onChange, onSubmit, onSkip }: Props) {
         This survey asks you to evaluate the roadmap against Ceres' specific
         situation, based on your day-to-day knowledge of our systems and
         ways of working. Your responses are anonymous and used solely to
-        inform academic research for an MSc in Digital and Technology
-        Solutions at Cranfield University. It should take about ten minutes.
+        inform a research study in the Faculty of Engineering &amp; Applied
+        Sciences at Cranfield University. It should take about ten minutes.
       </p>
 
       <div className="section-heading">Section A: About you</div>
