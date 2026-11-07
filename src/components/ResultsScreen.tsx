@@ -41,11 +41,23 @@ export function ResultsScreen({ dimensions, answers, targets, scores, roadmap, o
         roadmap={roadmap}
       />
 
-      <div className="actions-row">
+      <p className="print-only">
+        Interoperability Maturity Self-Assessment, printed{" "}
+        {new Date().toLocaleDateString("en-GB")}
+      </p>
+
+      <div className="actions-row no-print">
+        <button className="btn btn-secondary" onClick={() => window.print()}>
+          Print or save as PDF
+        </button>
         <button className="btn btn-primary" onClick={onContinue}>
           Continue
         </button>
       </div>
+      <p className="field-hint no-print">
+        To keep a copy of your results, choose “Save as PDF” as the destination
+        in the print window.
+      </p>
     </div>
   );
 }

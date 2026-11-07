@@ -14,15 +14,13 @@ import type {
 } from "./types";
 import { DIMENSION_ORDER, EMPTY_VALIDATION } from "./types";
 import { computeScores } from "./lib/scoring";
-import { submitAssessment, sendResultsEmail } from "./lib/api";
-import { renderImmediateActionsHtml, renderScoreSummaryHtml } from "./lib/emailSummary";
+import { submitAssessment } from "./lib/api";
 
 import { IntroScreen } from "./components/IntroScreen";
 import { VideoScreen } from "./components/VideoScreen";
 import { AssessmentSetupScreen } from "./components/AssessmentSetupScreen";
 import { AssessmentFlow } from "./components/AssessmentFlow";
 import { ResultsScreen } from "./components/ResultsScreen";
-import { EmailOptInScreen } from "./components/EmailOptInScreen";
 import { ValidationScreen } from "./components/ValidationScreen";
 import { ThankYouScreen } from "./components/ThankYouScreen";
 
@@ -40,7 +38,6 @@ type Stage =
   | "setup"
   | "assessment"
   | "results"
-  | "email"
   | "validation"
   | "thankyou";
 
@@ -115,14 +112,6 @@ export default function App() {
     }
   };
 
-  const handleSendEmail = async (email: string) => {
-    const resultsHtml =
-      renderScoreSummaryHtml(dimensions, scores, targets) +
-      renderImmediateActionsHtml(dimensions, answers, targets, roadmapData);
-    await sendResultsEmail(email, buildPayload(false), resultsHtml);
-    setStage("validation");
-  };
-
   const handleValidationSubmit = async () => {
     try {
       await submitAssessment(buildPayload(true));
@@ -161,7 +150,7 @@ export default function App() {
       {stage === "results" && (
         <>
           {submitError && (
-            <div className="card" style={{ marginBottom: 16 }}>
+            <div className="card no-print" style={{ marginBottom: 16 }}>
               <p className="error-text" style={{ margin: 0 }}>
                 {submitError}
               </p>
@@ -173,16 +162,9 @@ export default function App() {
             targets={targets}
             scores={scores}
             roadmap={roadmapData}
-            onContinue={() => setStage("email")}
+            onContinue={() => setStage("validation")}
           />
         </>
-      )}
-
-      {stage === "email" && (
-        <EmailOptInScreen
-          onSendAndContinue={handleSendEmail}
-          onContinueWithoutEmail={() => setStage("validation")}
-        />
       )}
 
       {stage === "validation" && (
